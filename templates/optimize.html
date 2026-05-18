@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Grimoire Prompt - 提示词优化{% endblock %}
+{% block nav_optimize %}active{% endblock %}
+
+{% block content %}
+<div class="optimize-page">
+    <!-- 配置栏 -->
+    <div class="config-bar">
+        <div class="form-group">
+            <label for="template-select">优化模板</label>
+            <select id="template-select">
+                <option value="">加载中...</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="llm-select">LLM 配置</label>
+            <select id="llm-select">
+                <option value="">默认</option>
+            </select>
+        </div>
+        <button id="optimize-btn" class="btn btn-primary">优化</button>
+    </div>
+
+    <!-- 输入区 -->
+    <div class="input-section">
+        <div class="section-header">
+            <h3>输入提示词</h3>
+            <span id="char-count">0 字</span>
+        </div>
+        <textarea id="prompt-input" placeholder="请输入需要优化的提示词..." rows="8"></textarea>
+    </div>
+
+    <!-- 输出区 -->
+    <div class="output-section">
+        <div class="section-header">
+            <h3>优化结果</h3>
+            <div class="output-actions">
+                <button id="copy-btn" class="btn btn-sm" disabled>复制</button>
+            </div>
+        </div>
+        <div id="output-area" class="output-content">
+            <span class="placeholder">优化结果将在这里显示...</span>
+        </div>
+        <!-- 意图覆盖状态 -->
+        <div id="intent-bar" class="intent-bar" style="display:none;">
+            <div id="intent-list" class="intent-list"></div>
+            <div id="intent-verify" class="intent-verify"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/optimize.js?v=4"></script>
+{% endblock %}

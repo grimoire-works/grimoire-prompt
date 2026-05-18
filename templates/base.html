@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Grimoire Prompt{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Grimoire Prompt</div>
+        <div class="nav-links">
+            <a href="/" class="{% block nav_optimize %}{% endblock %}">优化</a>
+            <a href="/templates" class="{% block nav_templates %}{% endblock %}">模板管理</a>
+            <a href="/settings" class="{% block nav_settings %}{% endblock %}">设置</a>
+        </div>
+    </nav>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

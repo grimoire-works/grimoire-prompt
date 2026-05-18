@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Grimoire Prompt - 设置{% endblock %}
+{% block nav_settings %}active{% endblock %}
+
+{% block content %}
+<div class="manage-page">
+    <div class="manage-layout">
+        <!-- 左侧列表 -->
+        <div class="manage-sidebar">
+            <div class="sidebar-header">
+                <h3>LLM 配置</h3>
+                <button id="create-btn" class="btn btn-sm btn-primary">新建</button>
+            </div>
+            <ul id="config-list" class="item-list"></ul>
+        </div>
+        <!-- 右侧编辑 -->
+        <div class="manage-detail" id="detail-panel">
+            <div class="detail-placeholder">选择一个配置查看或编辑</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/settings.js"></script>
+{% endblock %}
