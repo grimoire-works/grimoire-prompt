@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel
 
@@ -35,7 +36,7 @@ class TemplateUpdate(BaseModel):
 
 class LlmConfigCreate(BaseModel):
     name: str
-    provider: str  # openai / anthropic / openai_compatible
+    provider: Literal["openai", "openai_compatible", "anthropic"]
     api_key: str | None = None
     base_url: str | None = None
     model_name: str
@@ -46,7 +47,7 @@ class LlmConfigCreate(BaseModel):
 
 class LlmConfigUpdate(BaseModel):
     name: str | None = None
-    provider: str | None = None
+    provider: Literal["openai", "openai_compatible", "anthropic"] | None = None
     api_key: str | None = None
     base_url: str | None = None
     model_name: str | None = None
@@ -85,6 +86,8 @@ class HistoryResponse(BaseModel):
     optimized_prompt: str
     template_id: str
     llm_config_id: str
+    original_intents: list[str] | None = None
+    intent_coverage: float | None = None
     created_at: datetime
 
 

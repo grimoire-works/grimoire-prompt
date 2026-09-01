@@ -35,7 +35,8 @@ class LlmConfig(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=_uuid)
     name: Mapped[str] = mapped_column(String(128), nullable=False)
     provider: Mapped[str] = mapped_column(String(32), nullable=False)
-    api_key: Mapped[str | None] = mapped_column(String(256))
+    # Fernet 密文比明文长约 120 字符（160 字符明文 → ~312 字符密文），故加宽到 512
+    api_key: Mapped[str | None] = mapped_column(String(512))
     base_url: Mapped[str | None] = mapped_column(String(256))
     model_name: Mapped[str] = mapped_column(String(128), nullable=False)
     temperature: Mapped[float] = mapped_column(Float, default=0.7)

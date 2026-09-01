@@ -4,7 +4,8 @@ version = "0.1.0"
 description = "提示词优化工具"
 requires-python = ">=3.12"
 dependencies = [
-    "fastapi>=0.115",
+    "fastapi>=0.115,<1.0",
+    "starlette>=0.27,<1.0",
     "uvicorn[standard]>=0.30",
     "sqlalchemy[asyncio]>=2.0",
     "aiosqlite>=0.20",
