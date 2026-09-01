@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Grimoire Prompt - 优化历史{% endblock %}
+{% block nav_history %}active{% endblock %}
+
+{% block content %}
+<div class="manage-page">
+    <div class="manage-layout">
+        <!-- 左侧：历史列表 -->
+        <div class="manage-sidebar">
+            <div class="sidebar-header">
+                <h3>优化历史</h3>
+                <button id="clear-btn" class="btn btn-sm btn-danger">清空全部</button>
+            </div>
+            <ul id="history-list" class="item-list"></ul>
+            <div class="history-pagination">
+                <button id="prev-page" class="btn btn-sm" disabled>上一页</button>
+                <span id="page-info" class="page-info"></span>
+                <button id="next-page" class="btn btn-sm" disabled>下一页</button>
+            </div>
+        </div>
+        <!-- 右侧：记录详情 -->
+        <div class="manage-detail" id="history-detail">
+            <div class="detail-placeholder">选择一条记录查看详情</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/vendor/marked.min.js"></script>
+<script src="/static/vendor/purify.min.js"></script>
+<script src="/static/js/history.js?v=1"></script>
+{% endblock %}

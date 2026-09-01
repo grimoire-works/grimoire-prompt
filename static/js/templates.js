@@ -21,7 +21,7 @@ function renderList() {
         const li = document.createElement('li');
         li.dataset.id = t.id;
         li.className = t.id === currentId ? 'active' : '';
-        li.innerHTML = t.name + (t.is_builtin ? '<span class="badge">内置</span>' : '');
+        li.innerHTML = escapeHtml(t.name) + (t.is_builtin ? '<span class="badge">内置</span>' : '');
         li.addEventListener('click', () => selectTemplate(t.id));
         templateList.appendChild(li);
     });
@@ -159,10 +159,10 @@ async function cloneTemplate(id) {
     }
 }
 
+const HTML_ESCAPE_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+
 function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+    return String(str == null ? '' : str).replace(/[&<>"']/g, ch => HTML_ESCAPE_MAP[ch]);
 }
 
 function showToast(msg, type = '') {
