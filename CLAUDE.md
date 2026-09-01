@@ -11,6 +11,7 @@
 - **数据库**：SQLAlchemy (async) + aiosqlite/asyncmy
 - **模板**：Jinja2
 - **LLM 集成**：OpenAI SDK + Anthropic SDK
+- **加密**：cryptography（Fernet，API Key 加密存储）
 
 ## 项目结构
 
@@ -20,20 +21,24 @@ grimoire-prompt/
 ├── backend/
 │   ├── main.py          # FastAPI app
 │   ├── config.py        # 配置
+│   ├── crypto.py        # API Key Fernet 加密/解密
 │   ├── database.py      # 数据库连接
+│   ├── migrate.py       # 启动时轻量数据库迁移（缺列自动补齐）
 │   ├── models.py        # SQLAlchemy 模型
 │   ├── schemas.py       # Pydantic schemas
 │   ├── llm.py           # LLM 调用逻辑
 │   ├── builtins.py      # 内置数据
 │   ├── intent.py        # 意图识别
 │   └── routers/         # API 路由
-│       ├── optimize.py
-│       ├── template.py
-│       ├── history.py
-│       ├── pages.py
-│       └── llm_config.py
-├── static/js/           # 前端 JS
-├── templates/           # Jinja2 模板
+│       ├── optimize.py  # 优化接口（SSE 流式）
+│       ├── template.py  # 模板管理接口
+│       ├── history.py   # 历史记录接口（返回 original_intents/intent_coverage）
+│       ├── pages.py     # 页面路由（/、/history 等）
+│       └── llm_config.py # LLM 配置接口
+├── static/
+│   ├── js/              # 前端 JS（optimize、history、templates、settings、theme-toggle）
+│   └── vendor/          # 本地第三方库（marked.min.js、purify.min.js，无 CDN 依赖）
+├── templates/           # Jinja2 模板（base、optimize、history、templates、settings）
 └── pyproject.toml       # 项目配置
 ```
 
@@ -81,11 +86,13 @@ grimoire-prompt/
 ### 文档
 
 - 任务计划 → `doc/plan.md`（主Agent管理）
-- 经验库 → `doc/lessons-learned.md`（开发Agent追加）
+- 经验库 → `doc/lessons-learned.md`（开发Agent追加，禁止 Write 覆盖）
 - 协调日志 → `doc/main-log.md`（主Agent编写）
 - 测试报告 → `doc/test-reports/`（测试Agent写入）
-- PRD 文档 → `doc/prd.md`（PM Agent写入）
+- PRD 文档 → `doc/prd/prd.md`（PM Agent写入）
 - 设计方案 → `doc/design/`（designer Agent写入）
+- 技术方案 → `doc/dev/dev-plan.md`（dev Agent写入）
+- 交接文档 → `doc/handoff.md`（编排中断时自动生成）
 
 ## 项目级 UI 规则
 
@@ -94,7 +101,7 @@ grimoire-prompt/
 ### 工具选择
 
 1. **几何连接的可视化必须用 SVG/Canvas，禁止用 CSS div 硬拼线条**
-   - ✅ 琴弦、指针、连线、路径 → SVG `<path>` / `<line>` / Canvas
+   - ✅ 指针、连线、路径 → SVG `<path>` / `<line>` / Canvas
    - ❌ div + background + transform: rotate() 模拟线条
    - 原因：CSS div 是矩形布局工具，不是画线工具。每次尺寸变化都会导致角度、对齐全部重新计算
 
