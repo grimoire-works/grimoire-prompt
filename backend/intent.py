@@ -71,7 +71,7 @@ async def extract_intents(
         {"role": "system", "content": INTENT_EXTRACT_SYSTEM},
         {"role": "user", "content": user_prompt},
     ]
-    verify_config = {**config, "temperature": 0, "max_tokens": 500}
+    verify_config = {**config, "temperature": 0, "max_tokens": 2000}
     try:
         result = await provider.chat(messages, verify_config)
         parsed = _parse_json_response(result)
@@ -108,7 +108,7 @@ async def verify_intents(
             ),
         },
     ]
-    verify_config = {**config, "temperature": 0, "max_tokens": 500}
+    verify_config = {**config, "temperature": 0, "max_tokens": 2000}
     try:
         result = await provider.chat(messages, verify_config)
         parsed = _parse_json_response(result)

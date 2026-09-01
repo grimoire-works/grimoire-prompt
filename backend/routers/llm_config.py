@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.crypto import decrypt_secret, encrypt_secret
 from backend.database import get_db
 from backend.llm import get_provider
 from backend.models import LlmConfig
@@ -21,7 +22,7 @@ def _to_response(cfg: LlmConfig) -> dict:
         "id": cfg.id,
         "name": cfg.name,
         "provider": cfg.provider,
-        "api_key": _mask_api_key(cfg.api_key),
+        "api_key": _mask_api_key(decrypt_secret(cfg.api_key)),
         "base_url": cfg.base_url,
         "model_name": cfg.model_name,
         "temperature": cfg.temperature,
@@ -49,7 +50,7 @@ async def create_config(body: LlmConfigCreate, db: AsyncSession = Depends(get_db
     cfg = LlmConfig(
         name=body.name,
         provider=body.provider,
-        api_key=body.api_key,
+        api_key=encrypt_secret(body.api_key),
         base_url=body.base_url,
         model_name=body.model_name,
         temperature=body.temperature,
@@ -74,6 +75,10 @@ async def update_config(
         raise HTTPException(404, "配置不存在")
 
     data = body.model_dump(exclude_unset=True)
+
+    # api_key 非空时加密入库（历史明文在下次保存时自动变为密文）
+    if data.get("api_key"):
+        data["api_key"] = encrypt_secret(data["api_key"])
 
     # 如果设为默认，先取消其他默认
     if data.get("is_default"):
@@ -108,7 +113,7 @@ async def test_config(config_id: str, db: AsyncSession = Depends(get_db)):
 
     provider = get_provider(cfg.provider)
     ok = await provider.test_connection({
-        "api_key": cfg.api_key or "",
+        "api_key": decrypt_secret(cfg.api_key) or "",
         "base_url": cfg.base_url,
         "model_name": cfg.model_name,
         "temperature": 0.7,

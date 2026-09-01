@@ -22,35 +22,46 @@
         <button id="optimize-btn" class="btn btn-primary">优化</button>
     </div>
 
-    <!-- 输入区 -->
-    <div class="input-section">
-        <div class="section-header">
-            <h3>输入提示词</h3>
-            <span id="char-count">0 字</span>
-        </div>
-        <textarea id="prompt-input" placeholder="请输入需要优化的提示词..." rows="8"></textarea>
-    </div>
-
-    <!-- 输出区 -->
-    <div class="output-section">
-        <div class="section-header">
-            <h3>优化结果</h3>
-            <div class="output-actions">
-                <button id="copy-btn" class="btn btn-sm" disabled>复制</button>
+    <!-- 分栏布局 -->
+    <div class="split-layout">
+        <!-- 输入区 -->
+        <div class="input-section">
+            <div class="section-header">
+                <h3>输入提示词</h3>
+                <span id="char-count">0 字</span>
             </div>
+            <textarea id="prompt-input" placeholder="请输入需要优化的提示词..." rows="8"></textarea>
         </div>
-        <div id="output-area" class="output-content">
-            <span class="placeholder">优化结果将在这里显示...</span>
-        </div>
-        <!-- 意图覆盖状态 -->
-        <div id="intent-bar" class="intent-bar" style="display:none;">
-            <div id="intent-list" class="intent-list"></div>
-            <div id="intent-verify" class="intent-verify"></div>
+
+        <!-- 输出区 -->
+        <div class="output-section">
+            <div class="section-header">
+                <h3>优化结果</h3>
+                <div class="output-actions">
+                    <button id="copy-btn" class="btn btn-sm" disabled>复制</button>
+                </div>
+            </div>
+            <!-- 意图覆盖率进度条 -->
+            <div id="intent-coverage-bar" class="intent-coverage-bar" style="display:none;">
+                <div class="coverage-progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div id="coverage-progress-fill" class="coverage-progress-fill"></div>
+                </div>
+                <div class="coverage-info">
+                    <span id="coverage-percent" class="coverage-percent">0%</span>
+                    <span id="coverage-status" class="coverage-status"></span>
+                </div>
+                <div id="coverage-tags" class="coverage-tags"></div>
+            </div>
+            <div id="output-area" class="output-content">
+                <span class="placeholder">优化结果将在这里显示...</span>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="/static/js/optimize.js?v=4"></script>
+<script src="/static/vendor/marked.min.js"></script>
+<script src="/static/vendor/purify.min.js"></script>
+<script src="/static/js/optimize.js?v=9"></script>
 {% endblock %}

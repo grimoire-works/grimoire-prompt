@@ -15,6 +15,11 @@ async def templates_page(request: Request):
     return templates.TemplateResponse("templates.html", {"request": request})
 
 
+@router.get("/history")
+async def history_page(request: Request):
+    return templates.TemplateResponse("history.html", {"request": request})
+
+
 @router.get("/settings")
 async def settings_page(request: Request):
     return templates.TemplateResponse("settings.html", {"request": request})

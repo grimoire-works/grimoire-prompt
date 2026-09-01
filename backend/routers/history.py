@@ -1,3 +1,5 @@
+import json
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -7,6 +9,19 @@ from backend.models import OptimizationHistory
 from backend.schemas import HistoryListResponse, HistoryResponse
 
 router = APIRouter()
+
+
+def _parse_intents(raw: str | None) -> list[str] | None:
+    """把数据库中 JSON 字符串形式的意图列表解析为 list；None/脏数据返回 None。"""
+    if not raw:
+        return None
+    try:
+        parsed = json.loads(raw)
+    except (TypeError, ValueError):
+        return None
+    if not isinstance(parsed, list) or not all(isinstance(i, str) for i in parsed):
+        return None
+    return parsed
 
 
 @router.get("/history")
@@ -35,6 +50,8 @@ async def list_history(
                 "optimized_prompt": h.optimized_prompt,
                 "template_id": h.template_id,
                 "llm_config_id": h.llm_config_id,
+                "original_intents": _parse_intents(h.original_intents),
+                "intent_coverage": h.intent_coverage,
                 "created_at": h.created_at,
             }
             for h in items

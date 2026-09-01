@@ -8,6 +8,7 @@
 - **多种优化模板** — 内置通用优化、分析式结构优化、输出格式优化等模板，支持自定义
 - **多 LLM 支持** — OpenAI、Anthropic Claude、OpenAI 兼容 API（国产模型）
 - **流式输出** — SSE 实时流式响应，边生成边查看
+- **Markdown 渲染** — marked + DOMPurify 本地化加载（`static/vendor/`），无需外部 CDN，渲染结果经消毒防 XSS
 - **优化历史** — 完整记录原始提示词、优化结果、意图覆盖率
 - **API Key 加密存储** — 密钥加密后存入数据库，安全管理
 
@@ -102,7 +103,7 @@ grimoire-prompt/
 │       ├── llm_config.py    # LLM 配置管理
 │       ├── history.py       # 历史记录
 │       └── pages.py         # 页面路由
-├── static/                  # 静态资源（CSS / JS）
+├── static/                  # 静态资源（CSS / JS / 本地 vendor 库：marked、DOMPurify）
 ├── templates/               # Jinja2 页面模板
 └── pyproject.toml           # 项目配置
 ```
